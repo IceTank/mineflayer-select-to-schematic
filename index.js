@@ -54,7 +54,7 @@ function inject (bot) {
         width = Math.abs(pos1.x - pos2.x)
         depth = Math.abs(pos1.z - pos2.z)
 
-        bot.chat(`Volumen=${ (width + 1) * (height + 1) * (depth + 1) } Width=${ width + 1 } Height=${ height + 1 } Depth=${ depth + 1 }`)
+        bot.chat(`Volume=${ (width + 1) * (height + 1) * (depth + 1) } Width=${ width + 1 } Height=${ height + 1 } Depth=${ depth + 1 }`)
         let s1 = getPos1(pos1, pos2)
         let s2 = getPos2(pos1, pos2)
         console.info('Start', s1, 'End', s2)

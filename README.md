@@ -29,9 +29,7 @@ npm i git+https://github.com/IceTank/mineflayer-select-to-schematic.git
 or by including it in the the dependencies of your package.json
 ```json
 "dependencies": {
-    ...,
     "mineflayer-select-to-schematic": "git+https://github.com/IceTank/mineflayer-select-to-schematic.git",
-    ...
 }
 ```
 

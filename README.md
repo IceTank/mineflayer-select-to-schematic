@@ -2,6 +2,10 @@
 
 Make Schematics off your world with World Edit like selections.
 
+![Selection-small](https://user-images.githubusercontent.com/61137113/119718984-890ae180-be68-11eb-82fc-bd4690dad0d0.gif)
+![result](https://user-images.githubusercontent.com/61137113/119719301-e99a1e80-be68-11eb-8a4c-27249d4c5db0.PNG)
+
+
 ### Example
 Join the local offline server and load the plugin
 ```js

@@ -42,6 +42,7 @@ function inject (bot) {
         }
         bot.chat(`Block ${posNum} x:${pos.x} y:${pos.y} z:${pos.z}`)
     }
+
     bot.formationBot._save = async function(name) {
         if (!bot.formationBot.pos1 || !bot.formationBot.pos2) {
             return bot.chat('Pos1 or Pos2 null')
@@ -90,8 +91,27 @@ function inject (bot) {
         packetHandler(data, meta, bot)
     })
 
-    bot.on('chat', (username, message) => {
+    bot.formationBot.paste = async (schem, offset, replaceAir = false) => {
+        const commands = await schem.makeWithCommands(new Vec3(offset.x, offset.y, offset.z))
+        console.info('Commands', commands)
+        bot.chat(`Running ${commands.length} commands`)
+        for (const i in commands) {
+            if (i % 10 === 0) {
+                console.info(`Command ${i} out of ${commands.length}`)
+            }
+            const cmd = commands[i]
+            if (!replaceAir && cmd.endsWith('air')) {
+                continue
+            }
+            bot.chat(cmd)
+            await sleep(100)
+        }
+        return
+    }
+
+    bot.on('chat', async (username, message) => {
         if (bot.username === username) return
+        console.info('Chat', message)
         if (message === 'info') {
             let pos1 = this.formationBot.pos1
             let pos2 = this.formationBot.pos2
@@ -104,8 +124,39 @@ function inject (bot) {
                 name = cmd[1]
             }
             bot.formationBot._save(name)
+        } else if (message.startsWith('paste')) {
+            const args = message.split(' ')
+            if (args.length < 2) return bot.chat('Usage: paste <name> [replaceAir: (true | false)]')
+            console.info(args)
+            const schem = await loadSchem(args[1])
+            if (!schem) return bot.chat('Loading failed')
+            const replaceAir = args.length > 2 ? args[2] === 'true' : false
+            console.info(schem)
+            await bot.formationBot.paste(schem, bot.entity.position.floored().offset(1, 0, 1), replaceAir)
+            bot.chat('Finished')
         }
     })
+}
+
+async function loadSchem(name) {
+    return new Promise(async (resolve) => {
+        console.info('name:', name)
+        name = name + '.schem'
+        try {
+            const schematic = await Schematic.read(await fs.promises.readFile(path.join(SchematicsFolder, name)))
+            resolve(schematic)
+        } catch (err) {
+            console.error('Failed to read Schematic', name)
+            console.error(err)
+            resolve(null)
+        }
+    })
+}
+
+function packetHandler (data, meta, bot) {
+    if (meta.name !== 'animation') return
+    if (data.animation !== 0) return
+    bot.formationBot._entityClick(data.entityId)
 }
 
 function getPos1(v1, v2) {
@@ -121,10 +172,8 @@ function localDateString() {
     return 'form_' + now.toLocaleDateString() + '_' + now.toLocaleTimeString().split(':').join('_')
 }
 
-function packetHandler (data, meta, bot) {
-    if (meta.name !== 'animation') return
-    if (data.animation !== 0) return
-    bot.formationBot._entityClick(data.entityId)
+async function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 module.exports = {

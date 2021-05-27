@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "mineflayer": "^3.7.0",
-    "prismarine-schematic": "^1.2.0",
+    "prismarine-schematic": "github:IceTank/prismarine-schematic",
     "standard": "^16.0.3"
   }
 }

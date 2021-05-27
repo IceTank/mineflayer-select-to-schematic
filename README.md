@@ -38,6 +38,7 @@ or by including it in the the dependencies of your package.json
 ```
 
 ### Usage
+#### Saving a schematic
 First of grab a Wooden Axe and Hoe. To select an Area left click with ether the Wooden Axe or Wooden Hoe while looking at the block you want to select. 
 The Wooden Axe selects Position 1. The Wooden Hoe Position 2. 
 To save the Selected Area type
@@ -45,3 +46,6 @@ To save the Selected Area type
  into chat. This will save a Schematic off the current selection.
 You can give your Schematic a custom name by typing your name after save like so:
 ```save myCustomName```.
+
+#### Pasting a schematic
+If your bot is op on the server it can load and paste a schematic using /setblock commands. Type `paste schematicName` into chat to paste the selected schematic onto the current position were the bot is standing. By default it only runs commands for blocks that are not air. If you want to place air blocks to you can use `paste schematicName true`.
